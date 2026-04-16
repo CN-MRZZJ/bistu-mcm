@@ -1,0 +1,81 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Q1: Run Model",
+      "type": "shell",
+      "command": "python scripts/q1_cluster_model.py",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Q1: Run Visualize",
+      "type": "shell",
+      "command": "python scripts/q1_cluster_visualize.py",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Q2: Run Realtime Model",
+      "type": "shell",
+      "command": "python scripts/q2_realtime_model.py",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Q2: Build Vehicle-Speed Threshold",
+      "type": "shell",
+      "command": "python scripts/q2_threshold_by_vehicle_speed.py",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Clean: All (Dry Run)",
+      "type": "shell",
+      "command": "python scripts/clean_results.py --dry-run",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Clean: All",
+      "type": "shell",
+      "command": "python scripts/clean_results.py",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Clean: Q1 Only",
+      "type": "shell",
+      "command": "python scripts/clean_results.py --target q1",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Clean: Q2 Only",
+      "type": "shell",
+      "command": "python scripts/clean_results.py --target q2",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

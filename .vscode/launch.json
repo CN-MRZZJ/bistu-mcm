@@ -1,0 +1,80 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Q1: Run Model",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/q1_cluster_model.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Q1: Run Visualize",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/q1_cluster_visualize.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Q2: Run Realtime Model",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/q2_realtime_model.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Q2: Build Vehicle-Speed Threshold",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/q2_threshold_by_vehicle_speed.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Clean: All (Dry Run)",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/clean_results.py",
+      "args": [
+        "--dry-run"
+      ],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Clean: All",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/clean_results.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Clean: Q1 Only",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/clean_results.py",
+      "args": [
+        "--target",
+        "q1"
+      ],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Clean: Q2 Only",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/clean_results.py",
+      "args": [
+        "--target",
+        "q2"
+      ],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}

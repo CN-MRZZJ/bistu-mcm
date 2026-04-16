@@ -284,7 +284,36 @@ def score_devices(features: pd.DataFrame) -> pd.DataFrame:
         | (out["reliability_score"] <= p10)
         | (out["rule_hit_count"] >= 2)
     ).astype(int)
-    return out, {"eps": eps, "min_samples": min_samples, "p10_score": float(p10), "rule_thresholds": thresholds}
+
+    # 证据不足设备：样本量/覆盖天数/可对照率过低
+    n_p10 = float(out["n"].quantile(0.10))
+    cov_p10 = float(out["coverage_days"].quantile(0.10))
+    peer_p10 = float(out["peer_support_rate"].quantile(0.10))
+    out["is_low_evidence"] = (
+        (out["n"] <= n_p10)
+        | (out["coverage_days"] <= cov_p10)
+        | (out["peer_support_rate"] <= peer_p10)
+    ).astype(int)
+
+    # 低证据设备不直接判异常，单独作为“待补证据”类别
+    out["is_abnormal_device"] = ((out["is_abnormal_device"] == 1) & (out["is_low_evidence"] == 0)).astype(int)
+    out["device_status"] = np.where(
+        out["is_abnormal_device"] == 1,
+        "abnormal",
+        np.where(out["is_low_evidence"] == 1, "low_evidence", "normal"),
+    )
+
+    return out, {
+        "eps": eps,
+        "min_samples": min_samples,
+        "p10_score": float(p10),
+        "rule_thresholds": thresholds,
+        "low_evidence_thresholds": {
+            "n_p10": n_p10,
+            "coverage_days_p10": cov_p10,
+            "peer_support_rate_p10": peer_p10,
+        },
+    }
 
 
 def main():
@@ -297,6 +326,7 @@ def main():
     feature_path = OUTPUT_DIR / "q1_device_features.csv"
     score_path = OUTPUT_DIR / "q1_device_scores_cluster.csv"
     abnormal_path = OUTPUT_DIR / "q1_abnormal_devices_cluster.csv"
+    low_evidence_path = OUTPUT_DIR / "q1_low_evidence_devices.csv"
     summary_path = OUTPUT_DIR / "q1_cluster_summary.txt"
 
     features.to_csv(feature_path, index=False, encoding="utf-8-sig")
@@ -304,16 +334,23 @@ def main():
     scores[scores["is_abnormal_device"] == 1].sort_values("reliability_score", ascending=True).to_csv(
         abnormal_path, index=False, encoding="utf-8-sig"
     )
+    scores[scores["is_low_evidence"] == 1].sort_values("reliability_score", ascending=True).to_csv(
+        low_evidence_path, index=False, encoding="utf-8-sig"
+    )
 
     summary = []
     summary.append("Q1 聚类建模摘要")
     summary.append(f"总设备数: {len(scores)}")
     summary.append(f"异常设备数: {int(scores['is_abnormal_device'].sum())}")
+    summary.append(f"证据不足设备数: {int(scores['is_low_evidence'].sum())}")
     summary.append(f"噪声设备数(DBSCAN -1): {int(scores['is_noise'].sum())}")
     summary.append(f"DBSCAN eps: {params['eps']:.4f}")
     summary.append(f"DBSCAN min_samples: {params['min_samples']}")
     summary.append(f"可靠性分P10阈值: {params['p10_score']:.2f}")
     summary.append(f"规则命中>=2设备数: {int((scores['rule_hit_count'] >= 2).sum())}")
+    summary.append(f"低证据阈值 n<= {params['low_evidence_thresholds']['n_p10']:.1f}, "
+                   f"coverage_days<= {params['low_evidence_thresholds']['coverage_days_p10']:.1f}, "
+                   f"peer_support_rate<= {params['low_evidence_thresholds']['peer_support_rate_p10']:.3f}")
     summary.append("")
     summary.append("最低分前10设备:")
     top10 = scores.sort_values("reliability_score", ascending=True).head(10)[
@@ -324,7 +361,7 @@ def main():
     summary_path.write_text(summary_text, encoding="utf-8")
 
     print(summary_text)
-    print(f"\n输出文件:\n- {feature_path}\n- {score_path}\n- {abnormal_path}\n- {summary_path}")
+    print(f"\n输出文件:\n- {feature_path}\n- {score_path}\n- {abnormal_path}\n- {low_evidence_path}\n- {summary_path}")
 
 
 if __name__ == "__main__":

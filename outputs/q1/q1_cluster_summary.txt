@@ -1,11 +1,13 @@
 Q1 聚类建模摘要
 总设备数: 308
-异常设备数: 46
+异常设备数: 35
+证据不足设备数: 70
 噪声设备数(DBSCAN -1): 31
 DBSCAN eps: 3.9218
 DBSCAN min_samples: 17
 可靠性分P10阈值: 35.48
 规则命中>=2设备数: 23
+低证据阈值 n<= 26.0, coverage_days<= 2.0, peer_support_rate<= 0.000
 
 最低分前10设备:
     设备ID  reliability_score  is_noise  l3plus_rate  isolated_l3plus_rate  conflict_rate
