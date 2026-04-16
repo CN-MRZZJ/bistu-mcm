@@ -95,7 +95,7 @@
 - `isolated_high_value`: `1`
 
 ## 5. 交付文件
-- `scripts/q2_realtime_model.py`：Q2 实时算法脚本  
+- `scripts/solutions/q2_realtime_model.py`：Q2 实时算法脚本  
 - `outputs/q2/q2_high_event_judgement.csv`：所有高值事件判定  
 - `outputs/q2/q2_l3_after_20240301_judgement.csv`：题目要求的三级结果  
 - `outputs/q2/q2_summary.txt`：摘要与评估指标  

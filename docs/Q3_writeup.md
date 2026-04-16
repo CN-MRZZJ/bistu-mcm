@@ -90,7 +90,7 @@
 这些区间普遍表现为 `max_accP95` 较高，且部分区间 `三级及以上占比` 明显偏高。
 
 ## 6. 交付文件
-- `scripts/q3_line_quality.py`：Q3 评分脚本  
+- `scripts/solutions/q3_line_quality.py`：Q3 评分脚本  
 - `outputs/q3/q3_km_quality_scores.csv`：每公里全量评分  
 - `outputs/q3/q3_best_10_sections.csv`：最优10区间  
 - `outputs/q3/q3_worst_10_sections.csv`：最差10区间  

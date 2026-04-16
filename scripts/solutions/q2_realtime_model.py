@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 
 
-BASE_DIR = Path(__file__).resolve().parents[1]
+BASE_DIR = Path(__file__).resolve().parents[2]
 INPUT_DIR = BASE_DIR / "csv_cleaned"
 Q1_SCORE_FILE = BASE_DIR / "outputs" / "q1" / "q1_device_scores_cluster.csv"
 THRESHOLD_FILE = BASE_DIR / "outputs" / "q2" / "q2_vehicle_speed_threshold_reference.csv"

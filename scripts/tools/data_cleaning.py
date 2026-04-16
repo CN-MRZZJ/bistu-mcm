@@ -1,8 +1,13 @@
 import pandas as pd
 import numpy as np
 import os
+from pathlib import Path
 
 KEY_COLS = ['线号', '行别', '里程', '日期', '车型', '车号', '车次']
+BASE_DIR = Path(__file__).resolve().parents[2]
+RAW_DIR = BASE_DIR / 'csv_raw'
+CLEANED_DIR = BASE_DIR / 'csv_cleaned'
+REPORT_DIR = BASE_DIR / 'reports'
 
 def load_data(file_path):
     """加载CSV数据"""
@@ -102,10 +107,11 @@ def save_cleaned_data(df, output_path):
     except Exception as e:
         print(f"保存失败: {e}")
 
-def generate_report(df, original_count, filename, report_folder='./reports'):
+def generate_report(df, original_count, filename, report_folder=REPORT_DIR):
     """生成清洗报告并保存到指定文件夹"""
+    report_folder = Path(report_folder)
     # 确保报告文件夹存在
-    os.makedirs(report_folder, exist_ok=True)
+    report_folder.mkdir(parents=True, exist_ok=True)
     
     cleaned_count = len(df)
     removed_count = original_count - cleaned_count
@@ -148,7 +154,7 @@ def generate_report(df, original_count, filename, report_folder='./reports'):
     
     # 生成报告文件名（与数据文件同名，后缀为_report.txt）
     report_filename = os.path.splitext(filename)[0] + '_清洗报告.txt'
-    report_path = os.path.join(report_folder, report_filename)
+    report_path = report_folder / report_filename
     
     with open(report_path, 'w', encoding='utf-8') as f:
         f.write(report)
@@ -156,19 +162,19 @@ def generate_report(df, original_count, filename, report_folder='./reports'):
 
 if __name__ == '__main__':
     # 输入和输出文件夹
-    input_folder = './csv_raw'
-    output_folder = './csv_cleaned'
+    input_folder = RAW_DIR
+    output_folder = CLEANED_DIR
     
     # 确保输出文件夹存在
-    os.makedirs(output_folder, exist_ok=True)
+    output_folder.mkdir(parents=True, exist_ok=True)
     
     # 检查输入文件夹是否存在
-    if not os.path.exists(input_folder):
+    if not input_folder.exists():
         print(f"错误：输入文件夹 {input_folder} 不存在！")
         exit(1)
     
     # 遍历输入文件夹中的所有CSV文件
-    csv_files = [f for f in os.listdir(input_folder) if f.endswith('.csv')]
+    csv_files = [f.name for f in input_folder.iterdir() if f.is_file() and f.suffix.lower() == '.csv']
     
     if not csv_files:
         print(f"警告：输入文件夹 {input_folder} 中没有CSV文件")
@@ -182,8 +188,8 @@ if __name__ == '__main__':
         print('='*50)
         
         # 构建输入输出路径
-        input_file = os.path.join(input_folder, filename)
-        output_file = os.path.join(output_folder, os.path.splitext(filename)[0] + '_清洗后.csv')
+        input_file = input_folder / filename
+        output_file = output_folder / (Path(filename).stem + '_清洗后.csv')
         
         # 加载数据
         df = load_data(input_file)

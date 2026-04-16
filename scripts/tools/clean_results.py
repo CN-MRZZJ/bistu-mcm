@@ -58,17 +58,19 @@ def main() -> None:
     )
     parser.add_argument(
         "--target",
-        choices=["q1", "q2", "all"],
+        choices=["q1", "q2", "q3", "all"],
         default="all",
-        help="选择清理范围: q1/q2/all(默认)",
+        help="选择清理范围: q1/q2/q3/all(默认)",
     )
     args = parser.parse_args()
 
-    base_dir = Path(__file__).resolve().parents[1]
+    base_dir = Path(__file__).resolve().parents[2]
     if args.target in ("q1", "all"):
         clean_outputs(base_dir=base_dir, subdir="q1", prefix="q1", dry_run=args.dry_run)
     if args.target in ("q2", "all"):
         clean_outputs(base_dir=base_dir, subdir="q2", prefix="q2", dry_run=args.dry_run)
+    if args.target in ("q3", "all"):
+        clean_outputs(base_dir=base_dir, subdir="q3", prefix="q3", dry_run=args.dry_run)
 
 
 if __name__ == "__main__":

@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 
 
-BASE_DIR = Path(__file__).resolve().parents[1]
+BASE_DIR = Path(__file__).resolve().parents[2]
 INPUT_DIR = BASE_DIR / "csv_cleaned"
 OUT_DIR = BASE_DIR / "outputs" / "q3"
 

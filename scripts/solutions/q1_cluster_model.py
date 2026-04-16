@@ -8,7 +8,7 @@ from sklearn.neighbors import NearestNeighbors
 from sklearn.preprocessing import RobustScaler
 
 
-BASE_DIR = Path(__file__).resolve().parents[1]
+BASE_DIR = Path(__file__).resolve().parents[2]
 INPUT_DIR = BASE_DIR / "csv_cleaned"
 OUTPUT_DIR = BASE_DIR / "outputs" / "q1"
 
