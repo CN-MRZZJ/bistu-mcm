@@ -83,7 +83,6 @@ def infer_event_type(df: pd.DataFrame) -> pd.DataFrame:
         line = row["线号"]
         direction = row["行别"]
         mile = row["里程"]
-        current_device = row["设备ID"]
 
         mask = (
             (high_pool["线号"] == line)
@@ -113,19 +112,20 @@ def infer_event_type(df: pd.DataFrame) -> pd.DataFrame:
         if prior_device_count >= 2 and prior_high_count >= 3:
             is_line_issue = True
             reason.append("3天多设备复现")
-        if prior_device_count >= 1 and prior_high_count >= 2:
+        if prior_device_count >= 1 and prior_high_count >= 1:
             is_line_issue = True
             reason.append("3天窗口复现")
-        if prior_high_count >= 2 and slope > 1e-6:
+        if prior_high_count >= 1 and slope > 0:
             is_line_issue = True
             reason.append("3天趋势上升")
-        if prior_high_count == 0 and slope <= 1e-6:
+        if prior_high_count == 0 and slope <= 0:
             is_device_issue = True
             reason.append("孤立高值")
         if row["q1_device_status"] in ("abnormal", "low_evidence", "异常", "证据不足") and prior_device_count == 0:
             is_device_issue = True
             reason.append("设备先验可信度低")
-        if row["设备ID"] == current_device and prior_high_count > 0 and prior_device_count <= 1:
+        # Single-device repeats are treated as device-side only when repetition is clear and non-increasing.
+        if prior_high_count >= 2 and prior_device_count == 1 and slope <= 0:
             is_device_issue = True
             reason.append("仅同设备重复")
 
